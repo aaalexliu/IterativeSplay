@@ -12,14 +12,15 @@ public class SplayTest2{
 		for (int j = 0; j <= 11; j++)
 		    {
 			System.out.printf("nextExcluded(%d) = %d\n", j, s.nextExcluded(j));
+			System.out.println(j +": " + s.contains(j));
 		    }
 	    }
 
-	for (int i = 0; i <= 11; i++)
-	    {
-		System.out.println(i + ": " + s.contains(i));
-	    }
-	System.out.println(s);
+	// for (int i = 0; i <= 11; i++)
+	//     {
+	// 	System.out.println(i + ": " + s.contains(i));
+	//     }
+	// System.out.println(s);
 
 	int[] removeValues = {1, 10, 5, 2, 4, 8, 7, 6, 9, 3};
 	for (int i : removeValues)

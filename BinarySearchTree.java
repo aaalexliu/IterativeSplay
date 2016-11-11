@@ -4,6 +4,19 @@ public class BinarySearchTree implements IntSet301 {
 
 	private Node root;
 	private int size;
+	public int add;
+	public int addCount;
+	public int addNode;
+	public int addNodeCount;
+	public int successor;
+	public int successorCount;
+	public int remove;
+	public int splay;
+	public int splayCount;
+	public int contains;
+	public int containsCount;
+	public int delete;
+	public int deleteCount;
 
 	public BinarySearchTree(){
 		root = new Node();
@@ -12,32 +25,38 @@ public class BinarySearchTree implements IntSet301 {
 
 	}
 
+
 	@Override
 	public void add(int n){
-		if(contains(n)){
-			return;
-		}
-		else{
+		add++;
+		// if(contains(n)){
+		// 	return;
+		// }
+		// else{
 			Node curr = root.getRight();
 			Node parent = root;
 
 			while(curr != null){
+				addCount++;
+
 				if(n == curr.getStart() - 1){
-					System.out.println("ONE LESS, CHECKING IF TO EDIT CURRENT NODE");
+
+					successor++;
+					//System.out.println("ONE LESS, CHECKING IF TO EDIT CURRENT NODE");
 					Node predecessor = predecessor(curr);
 					if(predecessor != null){
 						if(predecessor.getEnd() + 1 == n){
-							System.out.println("MERGING");
+							//System.out.println("MERGING");
 							curr.setStart(predecessor.getStart());
 							delete(predecessor);	
 						}
 						else{
-							System.out.println("NOT MERGING");
+							//System.out.println("NOT MERGING");
 							curr.setStart(n);
 						}
 					}
 					else{
-						System.out.println("PREDECESSOR NOT FOUND, EDITING CURRENT NODE");
+						//System.out.println("PREDECESSOR NOT FOUND, EDITING CURRENT NODE");
 						curr.setStart(n);
 					}
 					size++;
@@ -45,23 +64,24 @@ public class BinarySearchTree implements IntSet301 {
 					return;
 				}
 				else if(n == curr.getEnd() + 1){
-					System.out.println("ONE MORE, CHECKING IF TO EDIT CURRENT NODE");
+					successor++;
+					//System.out.println("ONE MORE, CHECKING IF TO EDIT CURRENT NODE");
 					Node successor = successor(curr);
 					if(successor != null){
-						System.out.println("FOUND SUCCESSOR: ");
-						System.out.println(successor);
+						//System.out.println("FOUND SUCCESSOR: ");
+						//System.out.println(successor);
 						if(successor.getStart() - 1 == n){
-							System.out.println("MERGING");
+							//System.out.println("MERGING");
 							curr.setEnd(successor.getEnd());
 							delete(successor);
 						}
 						else{
-							System.out.println("NOT MERGING");
+							//System.out.println("NOT MERGING");
 							curr.setEnd(n);
 						}
 					}
 					else{
-						System.out.println("SUCCESSOR NOT FOUND, EDITING CURRENT NODE");
+						//System.out.println("SUCCESSOR NOT FOUND, EDITING CURRENT NODE");
 						curr.setEnd(n);
 					}
 					size++;
@@ -69,7 +89,7 @@ public class BinarySearchTree implements IntSet301 {
 					return;
 				}
 				else if(n < curr.getStart() - 1){
-					System.out.println("LESS THAN CURRENT NODE, GOING LEFT");
+					//System.out.println("LESS THAN CURRENT NODE, GOING LEFT");
 					parent = curr;
 					curr = curr.getLeft();
 				}
@@ -77,26 +97,29 @@ public class BinarySearchTree implements IntSet301 {
 					parent = curr;
 					curr = curr.getRight();
 				}
+				else if(n >= curr.getStart() && n<=curr.getEnd()){
+					return;
+				}
 			}
 			if(parent == root){
 				Node temp = new Node(n,n);
 				root.setRight(temp);
 				temp.setParent(root);
-				System.out.println("Is parent root: " + temp.getParent().isRoot());
+				//System.out.println("Is parent root: " + temp.getParent().isRoot());
 
 			}
 			else{
-				System.out.println("NOT ROOT, ADDING TO:");
-				System.out.println(parent);
+				//System.out.println("NOT ROOT, ADDING TO:");
+				//System.out.println(parent);
 				Node temp = new Node(n,n);
 
 				if(n < parent.getStart() - 1){
-					System.out.println("SETTING AS LEFT CHILD");
+					//System.out.println("SETTING AS LEFT CHILD");
 					temp.setParent(parent);
 					parent.setLeft(temp);
 				}
 				else if(n > parent.getEnd() + 1){
-					System.out.println("SETTING AS RIGHT CHILD");
+					//System.out.println("SETTING AS RIGHT CHILD");
 					temp.setParent(parent);
 					parent.setRight(temp);
 
@@ -105,7 +128,7 @@ public class BinarySearchTree implements IntSet301 {
 
 			}
 			size++;
-		}
+		// }
 	}
 
 	public void remove(int n){
@@ -142,8 +165,10 @@ public class BinarySearchTree implements IntSet301 {
 	private void add(Node a){
 		Node curr = root.getRight();
 		Node parent = root;
+		addNode++;
 
 		while(curr != null){
+			addNodeCount++;
 			parent = curr;
 			if(curr.getEnd() < a.getStart()){
 				curr = curr.getRight();
@@ -172,6 +197,7 @@ public class BinarySearchTree implements IntSet301 {
 	//check this method
 	private void delete(Node curr)
     {
+
 
 	if (curr.getLeft() == null && curr.getRight() == null)
 	    {
@@ -219,12 +245,14 @@ public class BinarySearchTree implements IntSet301 {
 	    }
 	else
 	      {
+	      	delete++;
 		  // node to delete has two children
 
 		  // find inorder successor (leftmopst in right subtree)
 		  Node replacement = curr.getRight();
 		  while (replacement.getLeft() != null)
 		      {
+		      deleteCount++;
 			  replacement = replacement.getLeft();
 		      }
 
@@ -267,6 +295,7 @@ public class BinarySearchTree implements IntSet301 {
 		Node parent = root;
 		int answer;
 
+
 		while(curr != null){
 			if(n >= curr.getStart() && n <= curr.getEnd()){
 				return curr.getEnd() + 1;
@@ -285,18 +314,26 @@ public class BinarySearchTree implements IntSet301 {
 
 	public boolean contains(int n){
 		Node curr = root.getRight();
+		Node parent = root;
+		contains++;
 
 		while(curr != null && curr.hasData()){
+			containsCount++;
 			if(n >= curr.getStart() && curr.getEnd() >= n){
 				splay(curr);
 				return true;
 			}
 			else if(n < curr.getStart()){
+				parent = curr;
 				curr = curr.getLeft();
 			}
 			else if(n > curr.getEnd()){
+				parent = curr;
 				curr = curr.getRight();
 			}
+		}
+		if(parent != root){
+			splay(parent);
 		}
 
 		return false;
@@ -307,12 +344,14 @@ public class BinarySearchTree implements IntSet301 {
 			curr = curr.getRight();
 			while(curr.getLeft() != null){
 				curr = curr.getLeft();
+				successorCount++;
 			}
 			return curr;
 		}
 		else{
 			Node next = curr.getParent();
 			while(next != root && next.getRight() == curr){
+				successorCount++;
 				if(next == root){
 					return null;
 				}
@@ -329,11 +368,12 @@ public class BinarySearchTree implements IntSet301 {
     }
 
     public Node predecessor(Node curr){
-    	System.out.println("FINDING PREDECESSOR");
+    	//System.out.println("FINDING PREDECESSOR");
     	if(curr.getLeft() != null){
     		curr = curr.getLeft();
     		while(curr.getRight() != null){
     			curr = curr.getRight();
+    			successorCount++;
     		}
     		return curr;
     	}
@@ -343,9 +383,10 @@ public class BinarySearchTree implements IntSet301 {
 	    	while(previous != root && previous.getLeft() == curr){
 	    		curr = previous;
 	    		previous = previous.getParent();
+	    		successorCount++;
 	    	}
     		if(previous == root){
-	    			System.out.println("PREDECSSOR FOUND ROOT, RETURNING NULL");
+	    			//System.out.println("PREDECSSOR FOUND ROOT, RETURNING NULL");
 	    			return null;
     		}
     		else{
@@ -361,13 +402,13 @@ public class BinarySearchTree implements IntSet301 {
 		Node parent = curr.getParent();
 		Node grandparent = parent.getParent();
 
-		System.out.println("ROTATING RIGHT, NODE: " + curr + " PARENT: " + parent + " GRANDPARENT: " + grandparent);
+		//System.out.println("ROTATING RIGHT, NODE: " + curr + " PARENT: " + parent + " GRANDPARENT: " + grandparent);
 
 		if(parent.isLeftChild()){
 			grandparent.setLeft(curr);
 		}
 		else if(parent.isRightChild()){
-			System.out.println("SETTING AS RIGHT");
+			//System.out.println("SETTING AS RIGHT");
 			grandparent.setRight(curr);
 		}
 
@@ -402,49 +443,47 @@ public class BinarySearchTree implements IntSet301 {
 	}
 
 	private void splay(Node curr){
-		System.out.println("SPLAYING " + curr);
+		//System.out.println("SPLAYING " + curr);
+		splay++;
 
 		while(curr != root.getRight()){
+			splayCount++;
 
 			Node parent = curr.getParent();
 
 			if(parent == root.getRight()){
-				System.out.println("PARENT IS ROOT");
+				//System.out.println("PARENT IS ROOT");
 				if(curr.isLeftChild()){
-					System.out.println("ROOT RIGHT ROTATION");
+					//System.out.println("ROOT RIGHT ROTATION");
 					rightRotation(curr);
 				}
 				else{
-					System.out.println("ROOT LEFT ROTATION");
+					//System.out.println("ROOT LEFT ROTATION");
 					leftRotation(curr);
 				}
 			}
 			else{
 				if(curr.isLeftChild()){
 					if(parent.isLeftChild()){
-						System.out.println("LEFT LEFT CASE");
+						//System.out.println("LEFT LEFT CASE");
 						rightRotation(parent);
 						rightRotation(curr);
 					}
 					else if(parent.isRightChild()){
-						System.out.println("RIGHT LEFT CASE");
+						//System.out.println("RIGHT LEFT CASE");
 						rightRotation(curr);
 						leftRotation(curr);
 					}
 				}
 
 				else if(curr.isRightChild()){
-					// System.out.println(parent.isLeftChild());
-					// System.out.println(parent.getParent().getLeft());
-					// System.out.println(parent.getParent());
-					// System.out.println(parent);
 					if(parent.isRightChild()){
-						System.out.println("RIGHT RIGHT CASE");
+						//System.out.println("RIGHT RIGHT CASE");
 						leftRotation(parent);
 						leftRotation(curr);
 					}
 					else if(parent.isLeftChild()){
-						System.out.println("LEFT RIGHT CASE");
+						//System.out.println("LEFT RIGHT CASE");
 						leftRotation(curr);
 						rightRotation(curr);
 					}
